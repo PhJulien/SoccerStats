@@ -204,9 +204,6 @@ Table2D <- function(Tab, colBoxTeam="lightcyan1", colBoxPoint="cadetblue3", colF
 ############## Classement
 #############
 
-classement <- c(4, 1, 3, 3, 3, 6, 3)
-names(classement) <- c("Bethusy", "Banque Coop", "CSPL", "Friends Connection", "Bretigny", "Nestle", "EHL")
 
-barplot(rev(classement), horiz=T, col="cadetblue4", las=1)
 
 
