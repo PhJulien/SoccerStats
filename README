@@ -7,6 +7,7 @@ README: this file
 SoccerStats.R: R functions allowing for the treatment of input files and contained data. Modifications should be reserved to experimented R programmers.
 Example.R: some chunk of codes showing the possibilities of this script.
 GoalsAssists.txt: example of input files containing the information about all goals and assists of a team. Personal datasets should be formatted as this file in order to be used with SoccerStats.
+Table.txt: example of ranking table used by SoccerStats. Personal datasets should be formatted as this file in order to be used with SoccerStats.
 
 Dependencies:
 graph, Rgraphviz, gplots
