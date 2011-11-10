@@ -1,0 +1,8 @@
+Bethusy	33	4
+Banque Coop	27	1
+Central	23	0
+CSPL	18	3
+Friends Connection	16	3
+Nestle 1	14	6
+EHL 1	13	3
+Bretigny	13	3
