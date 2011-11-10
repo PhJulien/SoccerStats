@@ -168,6 +168,36 @@ plotAssists <- function(Stats, col="steelblue3", horiz=T, las=1, ...) {
 
 
 
+Table2D <- function(Tab, colBoxTeam="lightcyan1", colBoxPoint="cadetblue3", colFontTeam="black", colFontPoints="black") {
+	
+	plot(c(0,1), c(0,1),  ann=F, xlim=c(0,10), ylim=c(min(Tab[,2]) - 1, max(Tab[,2]) + 1), bty='n',type='n',xaxt='n',yaxt='n')
+	
+	for (i in unique(Tab[,2])) {
+		
+	#	pts <- Tab[i,2]
+	#	team <- Tab[i,1]
+	
+		teams <- Tab[which(Tab[,2]==i),1]
+		
+		sep=""
+		teams_text <- ""
+		for (te in teams) {
+			teams_text <- paste(teams_text, te, sep=sep)
+			sep = ", "
+		}
+	
+		# Drawing rectangles for team and number of points
+		rect(xleft=0, ybottom=i, xright=9, ytop=i+1, col=colBoxTeam, lty=0)
+		rect(xleft=9.1, ybottom=i, xright=10, ytop=i+1, col=colBoxPoint, lty=0)
+		
+		# Writing the number of points and the teams' names
+		text(x=9.5, y=i+0.5, i, col=colFontPoints)
+		text(x=0, y=i+0.5, teams_text, col=colFontTeam, pos=4)
+		
+		}
+
+	
+}
 
 
 #############
