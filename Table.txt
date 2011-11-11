@@ -1,3 +1,4 @@
+Team	pts	pts_taken
 Bethusy	33	4
 Banque Coop	27	1
 Central	23	0

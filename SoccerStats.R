@@ -168,16 +168,42 @@ plotAssists <- function(Stats, col="steelblue3", horiz=T, las=1, ...) {
 
 
 
-Table2D <- function(Tab, colBoxTeam="lightcyan1", colBoxPoint="cadetblue3", colFontTeam="black", colFontPoints="black") {
+Table2D <- function(Tab, colBoxTeam="grey90", colBoxPoint="black", colFontTeam="black", colFontPoints="white") {
 	
-	plot(c(0,1), c(0,1),  ann=F, xlim=c(0,10), ylim=c(min(Tab[,2]) - 1, max(Tab[,2]) + 1), bty='n',type='n',xaxt='n',yaxt='n')
+	if (!("pts" %in% colnames(Tab)) | !("Team" %in% colnames(Tab))) { 
+		print("Error. Input object should have 'Team' and 'pts' columns")
+		return(FALSE)
+	}
 	
-	for (i in unique(Tab[,2])) {
+	plot(c(0,1), c(0,1),  ann=F, xlim=c(0,10), ylim=c(min(Tab[,"pts"]) - 1, max(Tab[,"pts"]) + 1.5), bty='n',type='n',xaxt='n',yaxt='n')
+	
+	# First, plotting headers
+	k <- max(Tab[,"pts"]) + 1.2
+	rect(xleft=9.1, ybottom=k, xright=10, ytop=k+1, col=colBoxPoint, lty=0)
+	rect(xleft=1.2, ybottom=k, xright=9, ytop=k+1, col=colBoxTeam, lty=0)
+	rect(xleft=0, ybottom=k, xright=1, ytop=k+1, col=colBoxPoint, lty=0)	
+
+	text(x=9.5, y=k+0.35, "Pts", col=colFontPoints, vfont=c("sans serif", "bold"))
+	text(x=1.2, y=k+0.35, "Teams", col=colFontTeam, pos=4, vfont=c("sans serif", "bold"))
+	text(x=0.4, y=k+0.35, "#", col=colFontPoints, vfont=c("sans serif", "bold"))
+	
+	# Then, plotting boxes with points
+	for (k in min(Tab[,"pts"]):max(Tab[,"pts"])) {
 		
-	#	pts <- Tab[i,2]
-	#	team <- Tab[i,1]
+		rect(xleft=9.1, ybottom=k, xright=10, ytop=k+1, col=colBoxPoint, lty=0)
+		text(x=9.5, y=k+0.45, k, col=colFontPoints, vfont=c("sans serif", "bold"))
+	}
 	
-		teams <- Tab[which(Tab[,2]==i),1]
+	# Now plotting teams and ranks
+	ranks <- rank(-Tab[,"pts"], ties.method="min")
+	
+	for (i in unique(Tab[,"pts"])) {
+		
+
+		
+		teams <- Tab[which(Tab[,"pts"]==i),1]
+		team_index <- which(teams == Tab[,"Team"])
+		thisRank <- ranks[team_index][1]
 		
 		sep=""
 		teams_text <- ""
@@ -186,13 +212,13 @@ Table2D <- function(Tab, colBoxTeam="lightcyan1", colBoxPoint="cadetblue3", colF
 			sep = ", "
 		}
 	
-		# Drawing rectangles for team and number of points
-		rect(xleft=0, ybottom=i, xright=9, ytop=i+1, col=colBoxTeam, lty=0)
-		rect(xleft=9.1, ybottom=i, xright=10, ytop=i+1, col=colBoxPoint, lty=0)
+		# Drawing rectangles for team and position
+		rect(xleft=1.2, ybottom=i, xright=9, ytop=i+1, col=colBoxTeam, lty=0)
+		rect(xleft=0, ybottom=i, xright=1, ytop=i+1, col=colBoxPoint, lty=0)
 		
 		# Writing the number of points and the teams' names
-		text(x=9.5, y=i+0.5, i, col=colFontPoints)
-		text(x=0, y=i+0.5, teams_text, col=colFontTeam, pos=4)
+		text(x=1.2, y=i+0.4, teams_text, col=colFontTeam, pos=4, vfont=c("sans serif", "bold"))
+		text(x=0.4, y=i+0.45, thisRank, col=colFontPoints, vfont=c("sans serif", "bold"))
 		
 		}
 
@@ -200,9 +226,8 @@ Table2D <- function(Tab, colBoxTeam="lightcyan1", colBoxPoint="cadetblue3", colF
 }
 
 
-#############
-############## Classement
-#############
+
+
 
 
 

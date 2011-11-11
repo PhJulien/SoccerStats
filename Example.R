@@ -48,7 +48,7 @@ PlotAssistGraph(g, Stats, emphasize="goals", lowColNodes="white", highColNodes="
 ########################
 #### Reading ranking table
 
-Tab <- read.delim("Table.txt", header=F)
+Tab <- read.delim("Table.txt")
 
 
 
