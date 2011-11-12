@@ -57,6 +57,15 @@ Tab <- read.delim("Table.txt")
 
 Table2D(Tab)
 
+########################
+#### Plotting number of points taken
+
+# Default options
+pts_taken(Tab)
+
+# With more advanced formatting
+pts_taken(Tab, maxpts=6, colBoxTeam="black", colFontTeam="white", colPointsTaken="goldenrod2", colPointsNotTaken="white")
+
 
 
 

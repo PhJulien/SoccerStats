@@ -37,7 +37,7 @@ GenerateAssistGraph <- function(Stats) {
 }
 
 
-
+### Should add a legend
 PlotAssistGraph <- function(g, Stats, emphasize="both", lowColNodes="white", highColNodes="steelblue3", NodesFontColor="black", NodeFontSize=22, EdgeFontSize=22, NodeFixedSize=FALSE) {
 
 	if (!(emphasize %in% c("both", "goals", "assists"))) { 
@@ -100,7 +100,7 @@ PlotAssistGraph <- function(g, Stats, emphasize="both", lowColNodes="white", hig
 	colscale_edges <- colorpanel(n=max(edW), low="gray70", high="gray0")
 	names(colscale_edges) <- 1:max(edW)
 	
-	edgesColor <- colscale2[edW]
+	edgesColor <- colscale_edges[edW]
 	names(edgesColor) <- sub("|","~",names(weightAttrAllEdges), fixed=T)
 	
 	
@@ -183,15 +183,15 @@ Table2D <- function(Tab, colBoxTeam="grey90", colBoxPoint="black", colFontTeam="
 	rect(xleft=1.2, ybottom=k, xright=9, ytop=k+1, col=colBoxTeam, lty=0)
 	rect(xleft=0, ybottom=k, xright=1, ytop=k+1, col=colBoxPoint, lty=0)	
 
-	text(x=9.5, y=k+0.35, "Pts", col=colFontPoints, vfont=c("sans serif", "bold"))
-	text(x=1.2, y=k+0.35, "Teams", col=colFontTeam, pos=4, vfont=c("sans serif", "bold"))
-	text(x=0.4, y=k+0.35, "#", col=colFontPoints, vfont=c("sans serif", "bold"))
+	text(x=9.5, y=k+0.45, "Pts", col=colFontPoints)
+	text(x=1.2, y=k+0.45, "Teams", col=colFontTeam, pos=4)
+	text(x=0.4, y=k+0.45, "#", col=colFontPoints)
 	
 	# Then, plotting boxes with points
 	for (k in min(Tab[,"pts"]):max(Tab[,"pts"])) {
 		
 		rect(xleft=9.1, ybottom=k, xright=10, ytop=k+1, col=colBoxPoint, lty=0)
-		text(x=9.5, y=k+0.45, k, col=colFontPoints, vfont=c("sans serif", "bold"))
+		text(x=9.5, y=k+0.45, k, col=colFontPoints)
 	}
 	
 	# Now plotting teams and ranks
@@ -217,8 +217,8 @@ Table2D <- function(Tab, colBoxTeam="grey90", colBoxPoint="black", colFontTeam="
 		rect(xleft=0, ybottom=i, xright=1, ytop=i+1, col=colBoxPoint, lty=0)
 		
 		# Writing the number of points and the teams' names
-		text(x=1.2, y=i+0.4, teams_text, col=colFontTeam, pos=4, vfont=c("sans serif", "bold"))
-		text(x=0.4, y=i+0.45, thisRank, col=colFontPoints, vfont=c("sans serif", "bold"))
+		text(x=1.2, y=i+0.4, teams_text, col=colFontTeam, pos=4)
+		text(x=0.4, y=i+0.45, thisRank, col=colFontPoints)
 		
 		}
 
@@ -229,6 +229,46 @@ Table2D <- function(Tab, colBoxTeam="grey90", colBoxPoint="black", colFontTeam="
 
 
 
+pts_taken <- function(Tab, maxpts=6, colBoxTeam="gray85", colFontTeam="black", colPointsTaken="cadetblue3", colPointsNotTaken="gray95") {
 
+  if (!("pts_taken" %in% colnames(Tab)) | !("Team" %in% colnames(Tab))) { 
+	  print("Error. Input object should have 'Team' and 'pts_taken' columns")
+	  return(FALSE)
+  }
+  
+  
+  nb_teams <- dim(Tab)[1]
+  plot(c(0,1), c(0,1),  ann=F, xlim=c(0,max(Tab[,"pts_taken"] + 9)), ylim=c(0,nb_teams + 2), bty='n',type='n',xaxt='n',yaxt='n')
+  
+  team_ys <- nb_teams:1
+  for (i in 1:dim(Tab)[1]) {
+    
+    # Plotting rank
+    rect(xleft=0, ybottom=team_ys[i]+0.1, xright=0.9, ytop=team_ys[i]+0.9, col=colBoxTeam, lty=0)
+    text(x=0, y=team_ys[i]+0.4, i, col=colFontTeam, pos=4) 
+    
+    # Plotting team name
+    rect(xleft=1, ybottom=team_ys[i]+0.1, xright=7, ytop=team_ys[i]+0.9, col=colBoxTeam, lty=0)
+    text(x=1.1, y=team_ys[i]+0.4, Tab[i,"Team"], col=colFontTeam, pos=4)
+    
+    # Defining points rectangles coordinates
+    rects_xleft <- 6 + 1:maxpts  
+    rects_xright <- rects_xleft + 0.9
+    rects_xleft <- rects_xleft + 0.1
+    
+    # Defining colors of rectangles
+    rect_cols <- 1:maxpts
+    rect_points <- rect_cols
+    rect_cols[rect_points <= Tab[i,"pts_taken"]] <- colPointsTaken
+    rect_cols[rect_points > Tab[i,"pts_taken"]] <- colPointsNotTaken
+    
+    # Plotting
+    rect(xleft=rects_xleft, ybottom=team_ys[i] + 0.1, xright=rects_xright, ytop=team_ys[i]+0.9, col=rect_cols, lty=0)
+
+    
+  }
+
+  
+}
 
 
