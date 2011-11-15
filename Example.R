@@ -55,7 +55,12 @@ Tab <- read.delim("Table.txt")
 ########################
 #### Generating 2D ranking table
 
+
 Table2D(Tab)
+
+# With alternative table
+Table2D(Tab, colBoxTeam="lightblue2", colBoxPoint="cadetblue3", colFontTeam="black", colFontPoints="black")
+
 
 ########################
 #### Plotting number of points taken
@@ -63,9 +68,10 @@ Table2D(Tab)
 # Default options
 pts_taken(Tab)
 
-# With more advanced formatting
+# With more advanced formatting and alternative color sets
 pts_taken(Tab, maxpts=6, colBoxTeam="black", colFontTeam="white", colPointsTaken="goldenrod2", colPointsNotTaken="white")
-
+pts_taken(Tab, maxpts=6, colBoxTeam="darkolivegreen3", colFontTeam="black", colPointsTaken="darkorchid3", colPointsNotTaken="gray90")
+pts_taken(Tab, maxpts=6, colBoxTeam="darkolivegreen3", colFontTeam="black", colPointsTaken="darkorange", colPointsNotTaken="gray90")
 
 
 

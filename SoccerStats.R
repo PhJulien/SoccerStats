@@ -97,7 +97,7 @@ PlotAssistGraph <- function(g, Stats, emphasize="both", lowColNodes="white", hig
 	
 	
 	######## Defining the color of the edges according their weight
-	colscale_edges <- colorpanel(n=max(edW), low="gray70", high="gray0")
+	colscale_edges <- colorpanel(n=max(edW), low="gray30", high="gray0")
 	names(colscale_edges) <- 1:max(edW)
 	
 	edgesColor <- colscale_edges[edW]

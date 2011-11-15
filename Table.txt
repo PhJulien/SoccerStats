@@ -1,6 +1,6 @@
 Team	pts	pts_taken
 Bethusy	33	4
-Banque Coop	27	1
+Banque Coop	30	1
 Central	23	0
 CSPL	18	3
 Friends Connection	16	3
