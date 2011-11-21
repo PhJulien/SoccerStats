@@ -40,8 +40,9 @@ PlotAssistGraph(g, Stats)
 # And custom ones
 PlotAssistGraph(g, Stats, emphasize="goals", lowColNodes="white", highColNodes="goldenrod2", NodesFontColor="black", NodeFontSize=22, EdgeFontSize=25, NodeFixedSize=FALSE)
 
-
-
+# Extracting and plotting subgraph for a given player
+gP <- generatePlayerSubGraph("Matteo", g)
+PlotAssistGraph(gP, Stats)
 
 
 

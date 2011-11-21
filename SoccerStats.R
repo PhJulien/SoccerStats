@@ -4,7 +4,6 @@ library(gplots)
 
 
 
-
 GenerateAssistGraph <- function(Stats) {
 	
 	nodes <- unique(as.vector(unlist(Stats[,1:2])))
@@ -37,11 +36,37 @@ GenerateAssistGraph <- function(Stats) {
 }
 
 
+
+
+##########  Generate a subgraph for a given player (need to first generate the global graph)
+
+generatePlayerSubGraph <- function(player, g) {
+
+  if (!(player %in% nodes(g))) {
+      cat("Error:", player ,"not in specified graph"); return(FALSE);
+  }
+  
+  
+  snodes <- c(player, edges(g)[[player]])
+  
+  for (e in names(edges(g))) {
+    if (player %in% edges(g)[[e]]) {
+      snodes <- c(snodes, e)
+    }
+  }
+
+  return(subGraph(unique(snodes), g))
+
+}
+
+
+
+
 ### Should add a legend
 PlotAssistGraph <- function(g, Stats, emphasize="both", lowColNodes="white", highColNodes="steelblue3", NodesFontColor="black", NodeFontSize=22, EdgeFontSize=22, NodeFixedSize=FALSE) {
 
 	if (!(emphasize %in% c("both", "goals", "assists"))) { 
-		print("Error - unknown value for emphasize parameter")
+		cat("Error - unknown value for emphasize parameter")
 		return(FALSE)
 	}
 
