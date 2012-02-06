@@ -191,45 +191,67 @@ plotAssists <- function(Stats, col="steelblue3", horiz=T, las=1, ...) {
 	
 	}
 
+countGoalsAssists <- function(Stats) {
+  
+  scorers <- Stats$Goal	
+  stats_goals <- sort(summary(scorers), decreasing=T)
+
+  assists <- Stats$Assist[Stats$Assist!="NULL"]
+  assists <- as.factor(as.vector(assists))
+  stats_pass <- sort(summary(assists), decreasing=T)
+  
+  players <- unique(c(names(stats_goals), names(stats_pass)))
+  res <- matrix(0, ncol=2, nrow=length(players), dimnames=list(players, c("Goals","Assist")))
+  
+  res[names(stats_goals),"Goals"] <- stats_goals
+  res[names(stats_pass),"Assist"] <- stats_pass
+  res <- cbind(rownames(res), res)
+  res <- as.data.frame(res)
+  colnames(res)[1] <- "Player"
+  return(res)
+  }
 
 
-Table2D <- function(Tab, colBoxTeam="grey90", colBoxPoint="black", colFontTeam="black", colFontPoints="white") {
+
+
+
+Table2D <- function(Tab, colBoxTeam="grey90", colBoxPoint="black", colFontTeam="black", colFontPoints="white", pts_col="pts", team_col="Team") {
 	
-	if (!("pts" %in% colnames(Tab)) | !("Team" %in% colnames(Tab))) { 
+	if (!(pts_col %in% colnames(Tab)) | !(team_col %in% colnames(Tab))) { 
 		print("Error. Input object should have 'Team' and 'pts' columns")
 		return(FALSE)
 	}
 	
-	plot(c(0,1), c(0,1),  ann=F, xlim=c(0,10), ylim=c(min(Tab[,"pts"]) - 1, max(Tab[,"pts"]) + 1.5), bty='n',type='n',xaxt='n',yaxt='n')
+  Tab <- Tab[order(as.numeric(as.vector(Tab[,pts_col])), decreasing=T), ]
+	plot(c(0,1), c(0,1),  ann=F, xlim=c(0,10), ylim=c(min(as.numeric(as.vector(Tab[,pts_col]))) - 1, max(as.numeric(as.vector(Tab[,pts_col]))) + 1.5), bty='n',type='n',xaxt='n',yaxt='n')
 	
 	# First, plotting headers
-	k <- max(Tab[,"pts"]) + 1.2
+	k <- max(as.numeric(as.vector(Tab[,pts_col]))) + 1.2
 	rect(xleft=9.1, ybottom=k, xright=10, ytop=k+1, col=colBoxPoint, lty=0)
 	rect(xleft=1.2, ybottom=k, xright=9, ytop=k+1, col=colBoxTeam, lty=0)
 	rect(xleft=0, ybottom=k, xright=1, ytop=k+1, col=colBoxPoint, lty=0)	
 
-	text(x=9.5, y=k+0.45, "Pts", col=colFontPoints)
-	text(x=1.2, y=k+0.45, "Teams", col=colFontTeam, pos=4)
+	text(x=9.5, y=k+0.45, pts_col, col=colFontPoints)
+	text(x=1.2, y=k+0.45, team_col, col=colFontTeam, pos=4)
 	text(x=0.4, y=k+0.45, "#", col=colFontPoints)
 	
 	# Then, plotting boxes with points
-	for (k in min(Tab[,"pts"]):max(Tab[,"pts"])) {
+	for (k in min(as.numeric(as.vector(Tab[,pts_col]))):max(as.numeric(as.vector(Tab[,pts_col])))) {
 		
 		rect(xleft=9.1, ybottom=k, xright=10, ytop=k+1, col=colBoxPoint, lty=0)
 		text(x=9.5, y=k+0.45, k, col=colFontPoints)
 	}
 	
 	# Now plotting teams and ranks
-	ranks <- rank(-Tab[,"pts"], ties.method="min")
+	ranks <- rank(-as.numeric(as.vector(Tab[,pts_col])), ties.method="min")
 	
-	for (i in unique(Tab[,"pts"])) {
+	for (i in unique(as.numeric(as.vector(Tab[,pts_col])))) {
 		
 
 		
-		teams <- Tab[which(Tab[,"pts"]==i),1]
-		team_index <- which(teams == Tab[,"Team"])
+		teams <- as.vector(Tab[which(as.numeric(as.vector(Tab[,pts_col]))==i),team_col])
+		team_index <- which(teams[1] == as.vector(Tab[,team_col]))
 		thisRank <- ranks[team_index][1]
-		
 		sep=""
 		teams_text <- ""
 		for (te in teams) {
@@ -297,3 +319,30 @@ pts_taken <- function(Tab, maxpts=6, colBoxTeam="gray85", colFontTeam="black", c
 }
 
 
+
+
+
+##### Enhanched barplots
+
+barplotS <- function(v, fill="cadetblue3", labels=names(v), sizeNames=5) {
+  
+  v <- sort(v, decreasing=F)
+  plot(0, col="white", ann=F, bty='n',type='n',xaxt='n',yaxt='n', xlim=c(0,max(v) + sizeNames) , ylim=c(0,length(v)))
+  row = 0
+  for (i in 1:length(v)) {
+    
+    ybot <- rep(row + 0.1, length(v))
+    ytop <- rep(row + 0.9, length(v)) 
+    
+    xleft <- seq(0,v[i] - 1) + 0.1 + sizeNames
+    xright <- seq(1,v[i]) - 0.1 + sizeNames
+    rect(xleft, ybot, xright, ytop, col=fill[1], border=fill[1])
+      
+    row <- row + 1
+    }
+
+  ### Adding names
+  text(rep(0.5, length(labels)), seq(1,length(labels)) - 0.5, labels=labels, pos=4)
+  
+
+}

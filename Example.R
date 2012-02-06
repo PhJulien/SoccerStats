@@ -63,6 +63,11 @@ Table2D(Tab)
 Table2D(Tab, colBoxTeam="lightblue2", colBoxPoint="cadetblue3", colFontTeam="black", colFontPoints="black")
 
 
+
+### 2D ranking tables can also be used to plot scorers/assists stats
+Table2D(countGoalsAssists(Stats), pts_col="Goals", team_col="Player", colBoxTeam="goldenrod2", colBoxPoint="black", colFontTeam="black", colFontPoints="white")
+Table2D(countGoalsAssists(Stats), pts_col="Assist", team_col="Player", colBoxTeam="lightblue2", colBoxPoint="cadetblue3", colFontTeam="black", colFontPoints="black")
+
 ########################
 #### Plotting number of points taken
 
@@ -75,4 +80,10 @@ pts_taken(Tab, maxpts=6, colBoxTeam="darkolivegreen3", colFontTeam="black", colP
 pts_taken(Tab, maxpts=6, colBoxTeam="darkolivegreen3", colFontTeam="black", colPointsTaken="darkorange", colPointsNotTaken="gray90")
 
 
+#########################
+#### Alternative barplot to represent number of goals/assists
+v <- as.numeric(as.vector(countGoalsAssists(Stats)$Goals))
+names(v) <- countGoalsAssists(Stats)$Player
+v <- v[v > 0]
+barplotS(v, fill="goldenrod1")
 
