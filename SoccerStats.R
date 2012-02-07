@@ -324,7 +324,7 @@ pts_taken <- function(Tab, maxpts=6, colBoxTeam="gray85", colFontTeam="black", c
 
 ##### Enhanched barplots
 
-barplotS <- function(v, fill="cadetblue3", labels=names(v), sizeNames=5) {
+barplotS <- function(v, fill="cadetblue3", labels=names(v), sizeNames=5, printNb=T) {
   
   v <- sort(v, decreasing=F)
   plot(0, col="white", ann=F, bty='n',type='n',xaxt='n',yaxt='n', xlim=c(0,max(v) + sizeNames) , ylim=c(0,length(v)))
@@ -342,6 +342,9 @@ barplotS <- function(v, fill="cadetblue3", labels=names(v), sizeNames=5) {
     }
 
   ### Adding names
+  if (printNb) {
+    labels <- paste(labels, " (", v, ")", sep="")
+    } 
   text(rep(0.5, length(labels)), seq(1,length(labels)) - 0.5, labels=labels, pos=4)
   
 

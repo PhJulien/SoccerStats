@@ -85,5 +85,7 @@ pts_taken(Tab, maxpts=6, colBoxTeam="darkolivegreen3", colFontTeam="black", colP
 v <- as.numeric(as.vector(countGoalsAssists(Stats)$Goals))
 names(v) <- countGoalsAssists(Stats)$Player
 v <- v[v > 0]
-barplotS(v, fill="goldenrod1")
+
+barplotS(v)
+barplotS(v, fill="goldenrod1", printNb=F)
 
